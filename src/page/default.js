@@ -1,16 +1,43 @@
-import React from 'react';
-import { Form, Message, Button } from 'semantic-ui-react';
+import React, { useState, useEffect } from 'react';
+import { Form, Message, Button, Input } from 'semantic-ui-react';
+import Data from '../db.json';
 
 const DefaultPage = () => {
+  const [error, setError] = useState(null);
+  const [givenValue, setGivenAnswer] = useState(0);
+
+  console.log(givenValue);
+
+  const { Questions } = Data;
+
+  // const inputClick = () => {};
+
+  const submitHandler = (event) => {
+    event.preventDefault();
+    // const givenAnswer = event.target.value;
+    console.log(event.target);
+  };
+
   return (
-    <Form error>
-      <Form.Group widths="equal">
-        <Form.Input placeholder="Equation" width={8} disabled />
-        <Form.Input placeholder="your answer" width={2} />
-        <Button>Submit</Button>
-      </Form.Group>
-      <Message error header="Wrong!" content="You have 2 more try" />{' '}
-    </Form>
+    <>
+      {Questions &&
+        Questions.map((question) => (
+          <Form error onSubmit={submitHandler}>
+            <Form.Group inline>
+              <Form.Field>
+                <label>{question.question}</label>
+                <Input
+                  placeholder="your answer"
+                  id={question.id}
+                  onChange={(event) => setGivenAnswer(event.target.value)}
+                />
+              </Form.Field>
+              <Button>Submit</Button>
+              {/* <Message error header="Wrong!" content="You have 2 more try" />{' '} */}
+            </Form.Group>
+          </Form>
+        ))}
+    </>
   );
 };
 
