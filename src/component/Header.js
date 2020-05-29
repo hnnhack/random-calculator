@@ -18,7 +18,6 @@ const Header = () => {
           <Link to="/thanks">THANK YOU</Link>
         </Menu.Item>
       </Container>
-      {console.log(window.location.href)}
     </Menu>
   );
 };
