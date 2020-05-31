@@ -1,11 +1,11 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Redirect, Switch } from 'react-router-dom';
-import Header from './component/Header';
+import Header from './components/Header';
 import { Container } from 'semantic-ui-react';
-import DefaultPage from './page/default';
-import ThanksPage from './page/thanks';
+import DefaultPage from './pages/DefaultPage';
+import ThanksPage from './pages/ThanksPage';
 
-function App() {
+const App = () => {
   return (
     <Router>
       <Container textAlign="center" style={{ margin: '2em' }}>
@@ -22,6 +22,6 @@ function App() {
       </Container>
     </Router>
   );
-}
+};
 
 export default App;
