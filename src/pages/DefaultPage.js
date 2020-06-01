@@ -27,15 +27,17 @@ const DefaultPage = () => {
       const index = Math.floor(Math.random() * Questions.length);
       sample.add(Questions[index]);
     }
+
     setRandomQuestions([...sample]);
-  }, [Questions, unsuccessQuestions]);
+
+    if (unsuccessQuestions.length === 3) {
+      console.log(unsuccessQuestions.length);
+      alert('3 Wrong answer. You lost!');
+    }
+  }, [Questions, unsuccessQuestions.length]);
 
   if (useRedirect) {
     return <Redirect to="/thanks" />;
-  }
-
-  if (unsuccessQuestions.length === 3) {
-    console.log(unsuccessQuestions.length);
   }
 
   const submitHandler = (event) => {
@@ -47,6 +49,8 @@ const DefaultPage = () => {
     } else {
       unsuccessQuestions.push(givenAnswer);
       console.log(unsuccessQuestions);
+      setActive(false);
+      alert(unsuccessQuestions.length + ' Wrong answer.');
     }
   };
 
