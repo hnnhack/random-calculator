@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Form, Button, Input, Grid } from 'semantic-ui-react';
+import { Form, Button, Input, Grid, Table } from 'semantic-ui-react';
 import Data from '../db.json';
 
 let RANDOM_COUNT = 5;
@@ -31,8 +31,8 @@ const DefaultPage = () => {
     setRandomQuestions([...sample]);
 
     if (unsuccessQuestions.length === 3) {
-      console.log(unsuccessQuestions.length);
-      alert('3 Wrong answer. You lost!');
+      alert('You lost! Because 3 Wrong answer.');
+      unsuccessQuestions.length = 0;
     }
   }, [Questions, unsuccessQuestions.length]);
 
@@ -96,6 +96,28 @@ const DefaultPage = () => {
             )}
           </Grid>
         ))}
+      <Table definition>
+        <Table.Header>
+          <Table.Row>
+            <Table.HeaderCell />
+            <Table.HeaderCell>Unsuccess Question</Table.HeaderCell>
+            <Table.HeaderCell>Given Wrong Answer</Table.HeaderCell>
+            <Table.HeaderCell>Correct Answer</Table.HeaderCell>
+          </Table.Row>
+        </Table.Header>
+
+        <Table.Body>
+          {unsuccessQuestions &&
+            unsuccessQuestions.map((question, index) => (
+              <Table.Row>
+                <Table.Cell>{index + 1}</Table.Cell>
+                <Table.Cell>{question.question.question}</Table.Cell>
+                <Table.Cell>{question.response}</Table.Cell>
+                <Table.Cell>{question.question.answer}</Table.Cell>
+              </Table.Row>
+            ))}
+        </Table.Body>
+      </Table>{' '}
     </>
   );
 };
