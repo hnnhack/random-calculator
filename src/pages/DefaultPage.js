@@ -8,11 +8,11 @@ let RANDOM_COUNT = 5;
 
 const DefaultPage = () => {
   const [modal, setModal] = useState(false);
-  const [randomQuestions, setRandomQuestions] = useState([]);
   const [active, setActive] = useState(false);
-  const [unsuccessQuestions, setUnsuccessQuestions] = useState([]);
   const [useRedirect, setUseRedirect] = useState(false);
   const [blockApplication, setBlockApplication] = useState(false);
+  const [randomQuestions, setRandomQuestions] = useState([]);
+  const [unsuccessQuestions, setUnsuccessQuestions] = useState([]);
   const [givenAnswer, setGivenAnswer] = useState({
     question: {
       id: 0,
@@ -84,14 +84,14 @@ const DefaultPage = () => {
           </Modal>
           {randomQuestions &&
             randomQuestions.map((question) => (
-              <Grid className="segment centered">
+              <Grid key={question.id} className="segment centered">
                 <Button color="blue" key={question.id} onClick={() => onButtonClick(question)}>
                   {question.question}
                 </Button>
                 {active && (
                   <Form onSubmit={(event) => submitHandler(event)} size="big">
-                    <Form.Group inline>
-                      <Form.Field>
+                    <Form.Group>
+                      <Form.Field key={question.id}>
                         <Input
                           placeholder="your answer"
                           id={question.id}
@@ -128,7 +128,7 @@ const DefaultPage = () => {
             <Table.Body>
               {unsuccessQuestions &&
                 unsuccessQuestions.map((question, index) => (
-                  <Table.Row>
+                  <Table.Row key={question.question.id}>
                     <Table.Cell>{index + 1}</Table.Cell>
                     <Table.Cell>{question.question.question}</Table.Cell>
                     <Table.Cell>{question.response}</Table.Cell>
