@@ -14,7 +14,6 @@ const ThanksPage = () => {
           </Button.Content>
         </Button>
       </Link>
-      <div className="thanksImage"></div>
       <ImageComponent />
     </>
   );

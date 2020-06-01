@@ -3,7 +3,7 @@ import { Image } from 'semantic-ui-react';
 
 const YouFailed = () => (
   <Image
-    src="https://www.minecraftforge.net/forum/uploads/monthly_2019_12/1618190649_minefuckyou.png.9439d6525eda4ee7ccab90aa85738e81.png"
+    src="https://media2.giphy.com/media/li0dswKqIZNpm/giphy.gif?cid=ecf05e476043b8d60dd161f7a086b0c3d4c6138117a88ff9&rid=giphy.gif"
     fluid
   />
 );
