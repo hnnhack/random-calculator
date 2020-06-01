@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Redirect } from 'react-router-dom';
-import { Form, Button, Input, Grid, Table } from 'semantic-ui-react';
+import { Form, Button, Input, Grid, Table, Modal } from 'semantic-ui-react';
 import Data from '../db.json';
 
 let RANDOM_COUNT = 5;
@@ -14,6 +14,7 @@ const DefaultPage = () => {
     },
     response: '',
   });
+  const [modal, setModal] = useState(false);
   const [randomQuestions, setRandomQuestions] = useState([]);
   const [active, setActive] = useState(false);
   const [unsuccessQuestions, setUnsuccessQuestions] = useState([]);
@@ -31,7 +32,7 @@ const DefaultPage = () => {
     setRandomQuestions([...sample]);
 
     if (unsuccessQuestions.length === 3) {
-      alert('You lost! Because 3 Wrong answer.');
+      setModal(true);
       unsuccessQuestions.length = 0;
     }
   }, [Questions, unsuccessQuestions.length]);
@@ -50,7 +51,7 @@ const DefaultPage = () => {
       unsuccessQuestions.push(givenAnswer);
       console.log(unsuccessQuestions);
       setActive(false);
-      alert(unsuccessQuestions.length + ' Wrong answer.');
+      unsuccessQuestions.length <= 2 && setModal(true);
     }
   };
 
@@ -61,6 +62,20 @@ const DefaultPage = () => {
 
   return (
     <>
+      {' '}
+      <Modal open={modal} dimmer="blurring">
+        <Modal.Header>{unsuccessQuestions.length ? 'ERROR' : 'YOU FAILED'}</Modal.Header>
+        <Modal.Content>
+          {unsuccessQuestions.length ? (
+            <p>Wrong Answer! {unsuccessQuestions.length}</p>
+          ) : (
+            <p>You gave 3 wrong answer. You couldn't pass.</p>
+          )}
+        </Modal.Content>
+        <Modal.Actions>
+          <Button onClick={() => setModal(false)} content="OK" />
+        </Modal.Actions>
+      </Modal>
       {randomQuestions &&
         randomQuestions.map((question) => (
           <Grid className="segment centered">
@@ -90,7 +105,6 @@ const DefaultPage = () => {
                     content="Submit"
                     type="submit"
                   />
-                  {/* <Message error={true} header="Wrong!" content="Wrong answer" /> */}
                 </Form.Group>
               </Form>
             )}
@@ -105,7 +119,6 @@ const DefaultPage = () => {
             <Table.HeaderCell>Correct Answer</Table.HeaderCell>
           </Table.Row>
         </Table.Header>
-
         <Table.Body>
           {unsuccessQuestions &&
             unsuccessQuestions.map((question, index) => (
