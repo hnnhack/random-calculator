@@ -13,7 +13,7 @@ const Header = () => {
           <Icon name="question" size="large" />
           <Link to="/">DEFAULT</Link>
         </Menu.Item>
-        <Menu.Item header>
+        <Menu.Item header style={{ marginLeft: '5em' }}>
           <Icon name="certificate" size="large" />
           <Link to="/thanks">THANK YOU</Link>
         </Menu.Item>

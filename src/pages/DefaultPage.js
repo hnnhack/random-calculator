@@ -1,15 +1,23 @@
 import React, { useState, useEffect } from 'react';
-import { Link, Redirect } from 'react-router-dom';
-import { Form, Message, Button, Input, Grid } from 'semantic-ui-react';
+import { Redirect } from 'react-router-dom';
+import { Form, Button, Input, Grid } from 'semantic-ui-react';
 import Data from '../db.json';
 
 let RANDOM_COUNT = 5;
 
 const DefaultPage = () => {
-  const [givenAnswer, setGivenAnswer] = useState('');
+  const [givenAnswer, setGivenAnswer] = useState({
+    question: {
+      id: 0,
+      question: '',
+      answer: '',
+    },
+    response: '',
+  });
   const [randomQuestions, setRandomQuestions] = useState([]);
   const [active, setActive] = useState(false);
-  const [unseccussQuestions, setUnsuccessQuestions] = useState([]);
+  const [unsuccessQuestions, setUnsuccessQuestions] = useState([]);
+  const [useRedirect, setUseRedirect] = useState(false);
 
   const { Questions } = Data;
 
@@ -20,23 +28,25 @@ const DefaultPage = () => {
       sample.add(Questions[index]);
     }
     setRandomQuestions([...sample]);
+  }, [Questions, unsuccessQuestions]);
 
-    // if (unseccussQuestions.length === 3) {
-    //   return (RANDOM_COUNT = 0);
-    // }
-  }, [Questions]);
+  if (useRedirect) {
+    return <Redirect to="/thanks" />;
+  }
+
+  if (unsuccessQuestions.length === 3) {
+    console.log(unsuccessQuestions.length);
+  }
 
   const submitHandler = (event) => {
     event.preventDefault();
     event.target.userAnswer.value = '';
-    console.log(givenAnswer);
     if (givenAnswer.question.answer === givenAnswer.response) {
-      console.log('goto thank you page!');
-      setUnsuccessQuestions.length = 0;
-      return <Redirect to="/thanks" />;
+      unsuccessQuestions.length = 0;
+      setUseRedirect(true);
     } else {
-      unseccussQuestions.push(givenAnswer.question);
-      console.log(unseccussQuestions + ' wrong!');
+      unsuccessQuestions.push(givenAnswer);
+      console.log(unsuccessQuestions);
     }
   };
 
@@ -48,9 +58,9 @@ const DefaultPage = () => {
   return (
     <>
       {randomQuestions &&
-        randomQuestions.map((question, index) => (
+        randomQuestions.map((question) => (
           <Grid className="segment centered">
-            <Button color="blue" key={index} onClick={() => onButtonClick(question)}>
+            <Button color="blue" key={question.id} onClick={() => onButtonClick(question)}>
               {question.question}
             </Button>
             {active && (
@@ -69,15 +79,13 @@ const DefaultPage = () => {
                       }
                     />
                   </Form.Field>
-                  <Link to="/thanks">
-                    <Form.Field
-                      control={Button}
-                      color="green"
-                      icon="check"
-                      content="Submit"
-                      type="submit"
-                    />
-                  </Link>
+                  <Form.Field
+                    control={Button}
+                    color="green"
+                    icon="check"
+                    content="Submit"
+                    type="submit"
+                  />
                   {/* <Message error={true} header="Wrong!" content="Wrong answer" /> */}
                 </Form.Group>
               </Form>
